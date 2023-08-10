@@ -9,60 +9,26 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
         return CallNextHookEx(NULL, nCode, wParam, lParam);
 
     MSLLHOOKSTRUCT *info = reinterpret_cast<MSLLHOOKSTRUCT *>(lParam);
-
-    char const *button_name[] = {"Left", "Right", "Middle", "X"};
-    enum
+    if (wParam == WM_XBUTTONDOWN)
     {
-        BTN_LEFT,
-        BTN_RIGHT,
-        BTN_MIDDLE,
-        BTN_XBUTTON,
-        BTN_NONE
-    } button = BTN_NONE;
-
-    char const *up_down[] = {"up", "down"};
-    bool down = false;
-
-    switch (wParam)
-    {
-
-    case WM_LBUTTONDOWN:
-        down = true;
-    case WM_LBUTTONUP:
-        button = BTN_LEFT;
-        break;
-    case WM_RBUTTONDOWN:
-        down = true;
-    case WM_RBUTTONUP:
-        button = BTN_RIGHT;
-        break;
-    case WM_MBUTTONDOWN:
-        down = true;
-    case WM_MBUTTONUP:
-        button = BTN_MIDDLE;
-        break;
-    case WM_XBUTTONDOWN:
-        down = true;
-    case WM_XBUTTONUP:
-        button = BTN_XBUTTON;
-        break;
-
-    case WM_MOUSEWHEEL:
-        // the hi order word might be negative, but WORD is unsigned, so
-        // we need some signed type of an appropriate size:
-        down = static_cast<std::make_signed_t<WORD>>(HIWORD(info->mouseData)) < 0;
-        std::cout << "Mouse wheel scrolled " << up_down[down] << '\n';
-        break;
+        if (HIWORD(info->mouseData) == 1)
+        {
+            keybd_event(VK_CONTROL, 0, 0, 0);               // 模拟按下 Ctrl 键
+            keybd_event('T', 0, 0, 0);                      // 模拟按下 A 键
+            keybd_event('T', 0, KEYEVENTF_KEYUP, 0);        // 模拟松开 A 键
+            keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0); // 模拟松开 Ctrl 键
+        }
+        else if (HIWORD(info->mouseData) == 2)
+        {
+            keybd_event(VK_CONTROL, 0, 0, 0);               // 模拟按下 Ctrl 键
+            keybd_event('W', 0, 0, 0);                      // 模拟按下 A 键
+            keybd_event('W', 0, KEYEVENTF_KEYUP, 0);        // 模拟松开 A 键
+            keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0); // 模拟松开 Ctrl 键
+        }
+        return 1; // 返回 1，表示事件已经被处理
     }
-
-    if (button != BTN_NONE)
-    {
-        std::cout << button_name[button];
-        if (button == BTN_XBUTTON)
-            std::cout << HIWORD(info->mouseData);
-        std::cout << " mouse button " << up_down[down] << '\n';
-    }
-
+    if (wParam == WM_XBUTTONUP)
+        return 1; // 返回 1，表示事件已经被处理
     return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 HHOOK hook = NULL;
