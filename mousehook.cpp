@@ -279,13 +279,17 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             ZeroMemory(inputs, sizeof(inputs));
 
             inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_LCONTROL;
-
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-                inputs[1].ki.wVk = 'X';
+            {
+                inputs[0].ki.wVk = VK_LMENU;
+                inputs[1].ki.wVk = VK_TAB;
+            }
             else if (HIWORD(info->mouseData) == 2)
-                inputs[1].ki.wVk = 'C';
+            {
+                inputs[0].ki.wVk = VK_LWIN;
+                inputs[1].ki.wVk = 'D';
+            }
 
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
@@ -310,9 +314,9 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
 
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-                inputs[1].ki.wVk = 'F';
-            else if (HIWORD(info->mouseData) == 2)
                 inputs[1].ki.wVk = 'V';
+            else if (HIWORD(info->mouseData) == 2)
+                inputs[1].ki.wVk = 'F';
 
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
@@ -387,17 +391,13 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             ZeroMemory(inputs, sizeof(inputs));
 
             inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = VK_LCONTROL;
+
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-            {
-                inputs[0].ki.wVk = VK_LMENU;
-                inputs[1].ki.wVk = VK_TAB;
-            }
+                inputs[1].ki.wVk = 'X';
             else if (HIWORD(info->mouseData) == 2)
-            {
-                inputs[0].ki.wVk = VK_LWIN;
-                inputs[1].ki.wVk = 'D';
-            }
+                inputs[1].ki.wVk = 'C';
 
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
