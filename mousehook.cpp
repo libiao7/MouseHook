@@ -63,7 +63,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             return 1; // 返回 1，表示事件已经被处理
         }
         // 右上角
-        else if (info->pt.x > 5100 && info->pt.y < 150)
+        else if (info->pt.x > 5013 && info->pt.y < 150)
         {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
@@ -144,7 +144,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             }
         }
         // 右上角
-        else if (info->pt.x > 5100 && info->pt.y < 150)
+        else if (info->pt.x > 5013 && info->pt.y < 150)
         {
             if (HIWORD(info->mouseData) == 1)
             {
@@ -251,7 +251,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             }
         }
         // 右下角
-        else if (info->pt.x > 5110 && info->pt.y > 2809)
+        else if (info->pt.x > 5013 && info->pt.y > 2809)
         {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
@@ -304,7 +304,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
             }
         }
         // 右
-        else if (info->pt.x > 5110)
+        else if (info->pt.x > 5013)
         {
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
