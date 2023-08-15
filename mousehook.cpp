@@ -314,9 +314,9 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
 
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-                inputs[1].ki.wVk = 'V';
-            else if (HIWORD(info->mouseData) == 2)
                 inputs[1].ki.wVk = 'F';
+            else if (HIWORD(info->mouseData) == 2)
+                inputs[1].ki.wVk = 'V';
 
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
@@ -395,9 +395,9 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
 
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-                inputs[1].ki.wVk = 'X';
-            else if (HIWORD(info->mouseData) == 2)
                 inputs[1].ki.wVk = 'C';
+            else if (HIWORD(info->mouseData) == 2)
+                inputs[1].ki.wVk = 'X';
 
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
