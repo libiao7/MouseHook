@@ -253,17 +253,22 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
         // 右下角
         else if (info->pt.x > 5013 && info->pt.y > 2809)
         {
-            INPUT inputs[2] = {};
+            INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
             inputs[0].type = INPUT_KEYBOARD;
-            if (HIWORD(info->mouseData) == 1)
-                inputs[0].ki.wVk = VK_F11;
-            else if (HIWORD(info->mouseData) == 2)
-                inputs[0].ki.wVk = VK_F12;
+            inputs[0].ki.wVk = VK_LCONTROL;
 
-            inputs[1] = inputs[0];
-            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[1].type = INPUT_KEYBOARD;
+            if (HIWORD(info->mouseData) == 1)
+                inputs[1].ki.wVk = 'F';
+            else if (HIWORD(info->mouseData) == 2)
+                inputs[1].ki.wVk = 'X';
+
+            inputs[2] = inputs[1];
+            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[3] = inputs[0];
+            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
 
             UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
             if (uSent != ARRAYSIZE(inputs))
@@ -306,22 +311,17 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
         // 右
         else if (info->pt.x > 5013)
         {
-            INPUT inputs[4] = {};
+            INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
             inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_LCONTROL;
-
-            inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1)
-                inputs[1].ki.wVk = 'F';
+                inputs[0].ki.wVk = VK_F11;
             else if (HIWORD(info->mouseData) == 2)
-                inputs[1].ki.wVk = 'X';
+                inputs[0].ki.wVk = VK_F12;
 
-            inputs[2] = inputs[1];
-            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-            inputs[3] = inputs[0];
-            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[1] = inputs[0];
+            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
 
             UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
             if (uSent != ARRAYSIZE(inputs))
