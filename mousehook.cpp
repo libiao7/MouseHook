@@ -102,29 +102,34 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
     else if (wParam == WM_RBUTTONDOWN) {
         // 左上角
         if (info->pt.x < 9 && info->pt.y < 9) {
-            rDown = true;
-            INPUT inputs[4] = {};
+            // INPUT inputs[4] = {};
+            INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
+            // inputs[0].type = INPUT_KEYBOARD;
+            // inputs[0].ki.wVk = VK_LSHIFT;
+            // inputs[1].type = INPUT_KEYBOARD;
+            // inputs[1].ki.wVk = VK_F5;
+            // inputs[2] = inputs[1];
+            // inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+            // inputs[3] = inputs[0];
+            // inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
             inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_LSHIFT;
-            inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = VK_F5;
-            inputs[2] = inputs[1];
-            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-            inputs[3] = inputs[0];
-            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[0].ki.wVk = VK_F5;
+            inputs[1] = inputs[0];
+            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
 
             UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
             if (uSent != ARRAYSIZE(inputs)) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            rDown = true;
             return 1;
         }
         // 左中
         else if (info->pt.x < 9 && info->pt.y < 2800) {
-            rDown = true;
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -142,11 +147,11 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            rDown = true;
             return 1;
         }
         // 右上角 X按钮
         else if (info->pt.x > 5028 && info->pt.y < 56) {
-            rDown = true;
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -164,6 +169,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            rDown = true;
             return 1;
         }
     }
@@ -176,7 +182,6 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
     else if (wParam == WM_MBUTTONDOWN) {
         // 右上角 X按钮
         if (info->pt.x > 5028 && info->pt.y < 56) {
-            mDown = true;
             INPUT inputs[6] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -200,11 +205,11 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            mDown = true;
             return 1;
         }
         // // 右下角
         // else if (info->pt.x > 5111 && info->pt.y > 2800) {
-        //     mDown = true;
         //     INPUT inputs[4] = {};
         //     ZeroMemory(inputs, sizeof(inputs));
 
@@ -222,11 +227,11 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         //         std::cout << "SendInput failed:"
         //                   << std::endl;
         //     }
+        //     mDown = true;
         //     return 1;
         // }
         // 左下角
         else if (info->pt.x < 9 && info->pt.y > 2800) {
-            mDown = true;
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -245,11 +250,11 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            mDown = true;
             return 1;
         }
         // 左中
         else if (info->pt.x < 9 && info->pt.y > 66) {
-            mDown = true;
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -267,6 +272,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 std::cout << "SendInput failed:"
                           << std::endl;
             }
+            mDown = true;
             return 1;
         }
     }
@@ -447,12 +453,14 @@ HHOOK hook = NULL;
 BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
     if (hook) {
         UnhookWindowsHookEx(hook);
-        std::cout << hook << "............Bye" << std::endl;
+        // std::cout << hook << "............Bye" << std::endl;
         hook = NULL;  // ctrl_handler might be called multiple times
-        std::cout << hook << "............Bye" << std::endl;
-        // std::cin.get(); // gives the user 5 seconds to read our last output
-        Sleep(2000);
+        // std::cout << hook << "............Bye" << std::endl;
+        // // std::cin.get(); // gives the user 5 seconds to read our last output
+        return TRUE;
     }
+    std::cout << hook << "......Why......Bye...2S" << std::endl;
+    Sleep(2000);
 
     return TRUE;
 }
