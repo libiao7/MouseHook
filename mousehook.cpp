@@ -21,7 +21,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         int zDelta = GET_WHEEL_DELTA_WPARAM(((MSLLHOOKSTRUCT*)lParam)->mouseData);
         // std::cout << zDelta << std::endl;
         // 左上角
-        if (info->pt.x < 150 && info->pt.y < 150) {
+        if (info->pt.x < 9 && info->pt.y < 66) {
             // 旧的方法
             // auto start = std::chrono::high_resolution_clock::now();
             // INPUT input = {0};
@@ -50,8 +50,8 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             }
             return 1;  // 返回 1，表示事件已经被处理
         }
-        // 右上角
-        else if (info->pt.x > 5013 && info->pt.y < 150) {
+        // 右上角 X按钮
+        else if (info->pt.x > 5028 && info->pt.y < 56) {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
@@ -72,7 +72,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;  // 返回 1，表示事件已经被处理
         }
         // 上
-        else if (info->pt.y < 150) {
+        else if (info->pt.y < 66) {
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
