@@ -128,28 +128,28 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             rDown = true;
             return 1;
         }
-        // 左中
-        else if (info->pt.x < 9 && info->pt.y < 2800) {
-            INPUT inputs[4] = {};
-            ZeroMemory(inputs, sizeof(inputs));
+        // // 左中
+        // else if (info->pt.x < 9 && info->pt.y < 2800) {
+        //     INPUT inputs[4] = {};
+        //     ZeroMemory(inputs, sizeof(inputs));
 
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_LCONTROL;
-            inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = 'X';
-            inputs[2] = inputs[1];
-            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-            inputs[3] = inputs[0];
-            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+        //     inputs[0].type = INPUT_KEYBOARD;
+        //     inputs[0].ki.wVk = VK_LCONTROL;
+        //     inputs[1].type = INPUT_KEYBOARD;
+        //     inputs[1].ki.wVk = 'X';
+        //     inputs[2] = inputs[1];
+        //     inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+        //     inputs[3] = inputs[0];
+        //     inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
 
-            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-            if (uSent != ARRAYSIZE(inputs)) {
-                std::cout << "SendInput failed:"
-                          << std::endl;
-            }
-            rDown = true;
-            return 1;
-        }
+        //     UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+        //     if (uSent != ARRAYSIZE(inputs)) {
+        //         std::cout << "SendInput failed:"
+        //                   << std::endl;
+        //     }
+        //     rDown = true;
+        //     return 1;
+        // }
         // 右上角 X按钮
         else if (info->pt.x > 5028 && info->pt.y < 56) {
             INPUT inputs[4] = {};
@@ -253,28 +253,28 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             mDown = true;
             return 1;
         }
-        // 左中
-        else if (info->pt.x < 9 && info->pt.y > 66) {
-            INPUT inputs[4] = {};
-            ZeroMemory(inputs, sizeof(inputs));
+        // // 左中
+        // else if (info->pt.x < 9 && info->pt.y > 66) {
+        //     INPUT inputs[4] = {};
+        //     ZeroMemory(inputs, sizeof(inputs));
 
-            inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_LCONTROL;
-            inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = 'D';
-            inputs[2] = inputs[1];
-            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-            inputs[3] = inputs[0];
-            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+        //     inputs[0].type = INPUT_KEYBOARD;
+        //     inputs[0].ki.wVk = VK_LCONTROL;
+        //     inputs[1].type = INPUT_KEYBOARD;
+        //     inputs[1].ki.wVk = 'D';
+        //     inputs[2] = inputs[1];
+        //     inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+        //     inputs[3] = inputs[0];
+        //     inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
 
-            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-            if (uSent != ARRAYSIZE(inputs)) {
-                std::cout << "SendInput failed:"
-                          << std::endl;
-            }
-            mDown = true;
-            return 1;
-        }
+        //     UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+        //     if (uSent != ARRAYSIZE(inputs)) {
+        //         std::cout << "SendInput failed:"
+        //                   << std::endl;
+        //     }
+        //     mDown = true;
+        //     return 1;
+        // }
     }
 
     else if (wParam == WM_MBUTTONUP && mDown) {
@@ -339,19 +339,40 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         }
         // 左下角
         else if (info->pt.x < 95 && info->pt.y > 2809) {
+            // INPUT inputs[4] = {};
+            // ZeroMemory(inputs, sizeof(inputs));
+
+            // inputs[0].type = INPUT_KEYBOARD;
+            // inputs[1].type = INPUT_KEYBOARD;
+            // if (HIWORD(info->mouseData) == 1) {
+            //     inputs[0].ki.wVk = VK_LMENU;
+            //     inputs[1].ki.wVk = 'Q';
+            // } else if (HIWORD(info->mouseData) == 2) {
+            //     inputs[0].ki.wVk = VK_LWIN;
+            //     inputs[1].ki.wVk = VK_SNAPSHOT;
+            // }
+
+            // inputs[2] = inputs[1];
+            // inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+            // inputs[3] = inputs[0];
+            // inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+            // UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+            // if (uSent != ARRAYSIZE(inputs)) {
+            //     std::cout << "SendInput failed:"
+            //               << std::endl;
+            // }
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
 
             inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = VK_LCONTROL;
             inputs[1].type = INPUT_KEYBOARD;
             if (HIWORD(info->mouseData) == 1) {
-                inputs[0].ki.wVk = VK_LMENU;
-                inputs[1].ki.wVk = 'Q';
+                inputs[1].ki.wVk = 'X';
             } else if (HIWORD(info->mouseData) == 2) {
-                inputs[0].ki.wVk = VK_LWIN;
-                inputs[1].ki.wVk = VK_SNAPSHOT;
+                inputs[1].ki.wVk = 'D';
             }
-
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
             inputs[3] = inputs[0];
