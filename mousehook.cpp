@@ -16,7 +16,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
     // std::cout << "Mouse position: (" << info->pt.x << ", " << info->pt.y << ")" << std::endl; // 输出鼠标位置
     if (wParam == WM_MOUSEWHEEL) {
         // 获取鼠标滚轮滚动方向
-        int zDelta = GET_WHEEL_DELTA_WPARAM(((MSLLHOOKSTRUCT*)lParam)->mouseData);
+        int zDelta = GET_WHEEL_DELTA_WPARAM(info->mouseData);
         // std::cout << zDelta << std::endl;
         // 左上角
         if (info->pt.x < 9 && info->pt.y < 67) {
