@@ -208,20 +208,16 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                     std::cout << L"SendInput failed:" << std::endl;
                 }
             } else if (HIWORD(info->mouseData) == 2) {
-                INPUT inputs[6] = {};
+                INPUT inputs[4] = {};
                 ZeroMemory(inputs, sizeof(inputs));
                 inputs[0].type = INPUT_KEYBOARD;
                 inputs[0].ki.wVk = VK_LCONTROL;
                 inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = VK_LSHIFT;
-                inputs[2].type = INPUT_KEYBOARD;
-                inputs[2].ki.wVk = 'O';
-                inputs[3] = inputs[2];
+                inputs[1].ki.wVk = 0x32;
+                inputs[2] = inputs[1];
+                inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+                inputs[3] = inputs[0];
                 inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
-                inputs[4] = inputs[1];
-                inputs[4].ki.dwFlags = KEYEVENTF_KEYUP;
-                inputs[5] = inputs[0];
-                inputs[5].ki.dwFlags = KEYEVENTF_KEYUP;
                 UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
                 if (uSent != ARRAYSIZE(inputs)) {
                     std::cout << L"SendInput failed:" << std::endl;
