@@ -198,7 +198,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 inputs[0].type = INPUT_KEYBOARD;
                 inputs[0].ki.wVk = VK_LCONTROL;
                 inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = 'H';
+                inputs[1].ki.wVk = 0x31;
                 inputs[2] = inputs[1];
                 inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
                 inputs[3] = inputs[0];
