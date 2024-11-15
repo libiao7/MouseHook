@@ -2,6 +2,9 @@
 #include <chrono>
 #include <iostream>
 #include <type_traits>  // std::make_signed_t<>
+unsigned __int16 screenW = 0;
+unsigned __int16 screenH = 0;
+DEVMODE devMode;
 bool rDown = false;
 bool xDown = false;
 LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
@@ -32,7 +35,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;  // 返回 1，表示事件已经被处理
         }
         // 右上角 X按钮的宽,chrome tab的下边界66以上
-        else if (info->pt.x > 5028 && info->pt.y < 67) {
+        else if (info->pt.x > devMode.dmPelsWidth * 0.98 && info->pt.y < 67) {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
@@ -96,7 +99,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;
         }
         // 右上角 X按钮的宽,chrome tab的下边界66以上
-        else if (info->pt.x > 5028 && info->pt.y < 67) {
+        else if (info->pt.x > devMode.dmPelsWidth * 0.98 && info->pt.y < 67) {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
@@ -155,7 +158,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;
         }
         // 左下角win按钮区域
-        else if (info->pt.y > 2807) {
+        else if (info->pt.y > devMode.dmPelsHeight * 0.98) {
             if (HIWORD(info->mouseData) == 1) {
                 INPUT inputs[4] = {};
                 ZeroMemory(inputs, sizeof(inputs));
@@ -246,12 +249,20 @@ BOOL WINAPI ctrl_handler(DWORD dwCtrlType) {
     return TRUE;
 }
 int main() {
-    SetConsoleCtrlHandler(ctrl_handler, TRUE);
-    hook = SetWindowsHookExW(WH_MOUSE_LL, MouseHookProc, nullptr, 0);
-    if (!hook) {
-        std::cerr << "SetWindowsHookExW() failed. Bye :(\n\n";
-        return EXIT_FAILURE;
+    ZeroMemory(&devMode, sizeof(devMode));
+    devMode.dmSize = sizeof(devMode);
+    if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode)) {
+        std::cout << "Physical Resolution: "
+                  << devMode.dmPelsWidth << "x" << devMode.dmPelsHeight << std::endl;
+        SetConsoleCtrlHandler(ctrl_handler, TRUE);
+        hook = SetWindowsHookExW(WH_MOUSE_LL, MouseHookProc, nullptr, 0);
+        if (!hook) {
+            std::cerr << "SetWindowsHookExW() failed. Bye :(\n\n";
+            return EXIT_FAILURE;
+        }
+        std::cout << "Hook set: " << hook << '\n';
+    } else {
+        std::cerr << "Failed to retrieve physical resolution!" << std::endl;
     }
-    std::cout << "Hook set: " << hook << '\n';
     GetMessageW(nullptr, nullptr, 0, 0);
 }
