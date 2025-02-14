@@ -98,14 +98,18 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             rDown = true;
             return 1;
         }
-        // 右上角 X按钮的宽,chrome tab的下边界66以上
+        // 右上角 X按钮的宽,chrome tab的下边界66以上,alt 1
         else if (info->pt.x > devMode.dmPelsWidth * 0.98 && info->pt.y < 67) {
-            INPUT inputs[2] = {};
+            INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
-            inputs[0].ki.wVk = VK_F11;
-            inputs[1] = inputs[0];
-            inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[0].ki.wVk = VK_LMENU;
+            inputs[1].type = INPUT_KEYBOARD;
+            inputs[1].ki.wVk = 0x31;
+            inputs[2] = inputs[1];
+            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[3] = inputs[0];
+            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
             UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
             if (uSent != ARRAYSIZE(inputs)) {
                 std::cout << L"SendInput failed:" << std::endl;
@@ -127,7 +131,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 INPUT inputs[4] = {};
                 ZeroMemory(inputs, sizeof(inputs));
                 inputs[0].type = INPUT_KEYBOARD;
-                inputs[0].ki.wVk = VK_LCONTROL;
+                inputs[0].ki.wVk = VK_LMENU;
                 inputs[1].type = INPUT_KEYBOARD;
                 inputs[1].ki.wVk = 'T';
                 inputs[2] = inputs[1];
