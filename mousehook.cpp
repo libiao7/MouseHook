@@ -80,9 +80,9 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             inputs[0].ki.wVk = VK_LCONTROL;
             inputs[1].type = INPUT_KEYBOARD;
             if (zDelta == 120)
-                inputs[1].ki.wVk = VK_PRIOR;//Page up key
+                inputs[1].ki.wVk = VK_PRIOR;  // Page up key
             else if (zDelta == -120)
-                inputs[1].ki.wVk = VK_NEXT;//Page down key
+                inputs[1].ki.wVk = VK_NEXT;  // Page down key
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
             inputs[3] = inputs[0];
@@ -126,7 +126,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             inputs[0].type = INPUT_KEYBOARD;
             inputs[0].ki.wVk = VK_LMENU;
             inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = 0x31;//1 key
+            inputs[1].ki.wVk = 0x31;  // 1 key
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
             inputs[3] = inputs[0];
@@ -146,7 +146,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
     }
     // x1 x2键 按下
     else if (wParam == WM_XBUTTONDOWN) {
-        // 中右
+        // 中+右
         if (info->pt.x > 94) {
             if (HIWORD(info->mouseData) == 1) {
                 INPUT inputs[4] = {};
@@ -221,12 +221,36 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         // 左边94宽,y为chrome tab的下边界66以下到2807
         else if (info->pt.y > 66) {
             if (HIWORD(info->mouseData) == 1) {
+                INPUT inputs[1] = {};
+                ZeroMemory(inputs, sizeof(inputs));
+                inputs[0].type = INPUT_KEYBOARD;
+                inputs[0].ki.wVk = VK_MEDIA_PLAY_PAUSE;
+                UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+                if (uSent != ARRAYSIZE(inputs)) {
+                    std::cout << L"SendInput failed:" << std::endl;
+                }
+            } else if (HIWORD(info->mouseData) == 2) {
+                INPUT inputs[1] = {};
+                ZeroMemory(inputs, sizeof(inputs));
+                inputs[0].type = INPUT_KEYBOARD;
+                inputs[0].ki.wVk = VK_MEDIA_NEXT_TRACK;
+                UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+                if (uSent != ARRAYSIZE(inputs)) {
+                    std::cout << L"SendInput failed:" << std::endl;
+                }
+            }
+            xDown = true;
+            return 1;
+        }
+        // 左上角
+        else {
+            if (HIWORD(info->mouseData) == 1) {
                 INPUT inputs[4] = {};
                 ZeroMemory(inputs, sizeof(inputs));
                 inputs[0].type = INPUT_KEYBOARD;
                 inputs[0].ki.wVk = VK_LCONTROL;
                 inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = 0x31;//1 key
+                inputs[1].ki.wVk = 0x31;  // 1 key
                 inputs[2] = inputs[1];
                 inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
                 inputs[3] = inputs[0];
@@ -236,16 +260,10 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                     std::cout << L"SendInput failed:" << std::endl;
                 }
             } else if (HIWORD(info->mouseData) == 2) {
-                INPUT inputs[4] = {};
+                INPUT inputs[1] = {};
                 ZeroMemory(inputs, sizeof(inputs));
                 inputs[0].type = INPUT_KEYBOARD;
-                inputs[0].ki.wVk = VK_LCONTROL;
-                inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = 0x32;//2 key
-                inputs[2] = inputs[1];
-                inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
-                inputs[3] = inputs[0];
-                inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+                inputs[0].ki.wVk = VK_MEDIA_PREV_TRACK;
                 UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
                 if (uSent != ARRAYSIZE(inputs)) {
                     std::cout << L"SendInput failed:" << std::endl;
