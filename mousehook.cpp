@@ -21,6 +21,27 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         int zDelta = GET_WHEEL_DELTA_WPARAM(info->mouseData);
         // 左上角
         if (info->pt.x < 9 && info->pt.y < 67) {
+            INPUT inputs[4] = {};
+            ZeroMemory(inputs, sizeof(inputs));
+            inputs[0].type = INPUT_KEYBOARD;
+            inputs[0].ki.wVk = VK_LMENU;
+            inputs[1].type = INPUT_KEYBOARD;
+            if (zDelta == 120)
+                inputs[1].ki.wVk = VK_LEFT;
+            else if (zDelta == -120)
+                inputs[1].ki.wVk = VK_RIGHT;
+            inputs[2] = inputs[1];
+            inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+            inputs[3] = inputs[0];
+            inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+            if (uSent != ARRAYSIZE(inputs)) {
+                std::cout << L"SendInput failed:" << std::endl;
+            }
+            return 1;
+        }
+        // 左上角之下
+        if (info->pt.x < 9 && info->pt.y < devMode.dmPelsHeight * 0.8) {
             INPUT inputs[1] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
@@ -59,9 +80,9 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             inputs[0].ki.wVk = VK_LCONTROL;
             inputs[1].type = INPUT_KEYBOARD;
             if (zDelta == 120)
-                inputs[1].ki.wVk = VK_PRIOR;
+                inputs[1].ki.wVk = VK_PRIOR;//Page up key
             else if (zDelta == -120)
-                inputs[1].ki.wVk = VK_NEXT;
+                inputs[1].ki.wVk = VK_NEXT;//Page down key
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
             inputs[3] = inputs[0];
@@ -105,7 +126,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             inputs[0].type = INPUT_KEYBOARD;
             inputs[0].ki.wVk = VK_LMENU;
             inputs[1].type = INPUT_KEYBOARD;
-            inputs[1].ki.wVk = 0x31;
+            inputs[1].ki.wVk = 0x31;//1 key
             inputs[2] = inputs[1];
             inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
             inputs[3] = inputs[0];
@@ -205,7 +226,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 inputs[0].type = INPUT_KEYBOARD;
                 inputs[0].ki.wVk = VK_LCONTROL;
                 inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = 0x31;
+                inputs[1].ki.wVk = 0x31;//1 key
                 inputs[2] = inputs[1];
                 inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
                 inputs[3] = inputs[0];
@@ -220,7 +241,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
                 inputs[0].type = INPUT_KEYBOARD;
                 inputs[0].ki.wVk = VK_LCONTROL;
                 inputs[1].type = INPUT_KEYBOARD;
-                inputs[1].ki.wVk = 0x32;
+                inputs[1].ki.wVk = 0x32;//2 key
                 inputs[2] = inputs[1];
                 inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
                 inputs[3] = inputs[0];
