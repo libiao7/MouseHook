@@ -20,7 +20,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
         // 获取鼠标滚轮滚动方向
         int zDelta = GET_WHEEL_DELTA_WPARAM(info->mouseData);
         // 左上角
-        if (info->pt.x < 9 && info->pt.y < 67) {
+        if (info->pt.x < 67 && info->pt.y < 67) {
             INPUT inputs[4] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
@@ -41,7 +41,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;
         }
         // 左上角之下
-        if (info->pt.x < 9 && info->pt.y < devMode.dmPelsHeight * 0.8) {
+        if (info->pt.x < 67 && info->pt.y < devMode.dmPelsHeight * 0.8) {
             INPUT inputs[1] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
