@@ -56,7 +56,7 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam) {
             return 1;  // 返回 1，表示事件已经被处理
         }
         // 右上角 X按钮的宽,chrome tab的下边界66以上
-        else if (info->pt.x > devMode.dmPelsWidth * 0.98 && info->pt.y < 67) {
+        else if (info->pt.x > devMode.dmPelsWidth * 0.92 && info->pt.y < 67) {
             INPUT inputs[2] = {};
             ZeroMemory(inputs, sizeof(inputs));
             inputs[0].type = INPUT_KEYBOARD;
